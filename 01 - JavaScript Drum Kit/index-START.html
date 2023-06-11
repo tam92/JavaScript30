@@ -59,7 +59,25 @@
   <audio data-key="KeyL" src="sounds/tink.wav"></audio>
 
 <script>
+  function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.code}"]`);
+    const key = document.querySelector(`.key[data-key="${e.code}"]`);
+    if(!audio) return; // stops the function from running if there's no audio asociated to the key pressed
+    audio.currentTime = 0; // allows the sound to play again if the key was pressed again before the sound ended
+    audio.play(); // plays the audio
+    key.classList.add('playing'); // adds the css class playing to the button to style it
+  }
 
+  function removeTransition(e) {
+    if (e.propertyName !== "transform") return;
+    this.classList.remove("playing");
+  }
+
+  const keys = document.querySelectorAll(".key"); // gives a node list with all the keys that have that class
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+  window.addEventListener('keydown', playSound);
+  
 </script>
 
 
